@@ -1,0 +1,197 @@
+﻿@model List<PixnoriaStore.Models.SiparisViewModel>
+
+@{
+    ViewBag.Title = "Tüm Siparişlerim";
+    Layout = null;
+}
+
+<style>
+    body {
+        background: #f5f5f5;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .orders-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 0 24px rgba(0,0,0,0.08);
+        padding: 32px 36px;
+    }
+
+    .orders-title {
+        color: #d22;
+        font-size: 2.2em;
+        font-family: 'Montserrat',Arial,sans-serif;
+        font-weight: 700;
+        margin-bottom: 16px;
+        letter-spacing: 1px;
+    }
+
+    .siparis-box {
+        border: 2px solid #ffdada;
+        border-radius: 12px;
+        margin-bottom: 32px;
+        padding: 18px 16px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(220,20,60,0.04);
+    }
+
+    .siparis-header {
+        font-size: 1.1em;
+        color: #d22;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .siparis-info {
+        color: #333;
+        margin-bottom: 8px;
+        font-size: 1em;
+    }
+
+    .siparis-durum {
+        color: #888;
+        font-size: 0.98em;
+        margin-bottom: 8px;
+    }
+
+    .siparis-toplam {
+        font-weight: 700;
+        color: #222;
+        font-size: 1.1em;
+    }
+
+    .urunler-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        background: #fff;
+    }
+
+        .urunler-table th, .urunler-table td {
+            text-align: center;
+            padding: 12px 8px;
+            vertical-align: middle;
+        }
+
+        .urunler-table th {
+            background: #fbecec;
+            color: #d22;
+            font-weight: 700;
+            font-size: 1.07em;
+        }
+
+        .urunler-table td {
+            border-bottom: 1px solid #f3f3f3;
+            font-size: 1em;
+        }
+
+        .urunler-table tr:last-child td {
+            border-bottom: none;
+        }
+
+    .urun-img {
+        width: 54px;
+        height: 36px;
+        object-fit: contain;
+        border-radius: 6px;
+        box-shadow: 0 1px 6px #e9d5d5;
+        margin-right: 8px;
+        vertical-align: middle;
+        background: #fbfbfb;
+    }
+
+    .order-delete-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #e00;
+        font-size: 1.3em;
+        padding: 0 8px;
+        vertical-align: middle;
+        transition: color 0.16s, transform 0.16s;
+        outline: none;
+    }
+
+        .order-delete-btn:hover {
+            color: #a00;
+            transform: scale(1.22);
+        }
+
+    .order-empty-row td, .order-empty-row {
+        color: #aaa;
+        font-size: 1.12em;
+        background: #f8f8f8;
+        text-align: center;
+        padding: 28px 0;
+        border-bottom: none;
+    }
+</style>
+
+<div class="orders-container">
+    <div class="orders-title">Tüm Siparişlerim</div>
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var siparis in Model)
+        {
+            <div class="siparis-box" id="order-@siparis.Id">
+                <div class="siparis-header">
+                    Sipariş No: @siparis.Id - @siparis.Tarih.ToString("dd.MM.yyyy")
+                </div>
+                <div class="siparis-info">
+                    <strong>Alıcı:</strong> @(siparis.Alici ?? "Bilinmiyor")
+                    | <strong>Özet:</strong> @siparis.Ozet
+                </div>
+                <div class="siparis-durum">
+                    <strong>Durum:</strong> @siparis.TeslimDurumAciklama
+                </div>
+                <div class="siparis-toplam">
+                    <strong>Toplam:</strong> @siparis.Toplam.ToString("N2") TL
+                </div>
+                <table class="urunler-table">
+                    <thead>
+                        <tr>
+                            <th>Görsel</th>
+                            <th>Ürün</th>
+                            <th>Adet</th>
+                            <th>Fiyat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (siparis.Urunler != null && siparis.Urunler.Any())
+                        {
+                            foreach (var urun in siparis.Urunler)
+                            {
+                                <tr id="order-row-@siparis.Id-@urun.Id">
+                                    <td>
+                                        <img src="@(string.IsNullOrEmpty(urun.ResimUrl) ? "/images/default-product.png" : "/images/" + urun.ResimUrl)"
+                                             class="urun-img"
+                                             alt="@urun.Ad"
+                                             onerror="this.src='/images/default-product.png'" />
+                                    </td>
+                                    <td>@urun.Ad</td>
+                                    <td>@urun.Adet</td>
+                                    <td>@urun.Fiyat.ToString("N2") TL</td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">Bu siparişte ürün bulunmamaktadır.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="siparis-box order-empty-row">
+            Hiç siparişiniz yok
+        </div>
+    }
+</div>

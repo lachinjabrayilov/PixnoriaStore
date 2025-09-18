@@ -1,0 +1,232 @@
+﻿body, html {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #fff;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* ----------- MODERN PROFİL MENÜ TASARIMI ----------- */
+.profile-menu {
+    background: #fff;
+    box-shadow: 0 6px 32px #e003;
+    border-radius: 14px;
+    min-width: 230px;
+    z-index: 99;
+    padding: 10px 0;
+    text-align: left;
+    position: absolute;
+    right: 0;
+    top: 38px;
+    display: none;
+}
+
+    .profile-menu.active {
+        display: block;
+    }
+
+.profile-menu-header {
+    padding: 8px 24px;
+    font-weight: 900;
+    font-size: 1.12em;
+    color: #e00;
+    border-bottom: 1px solid #ffdede;
+    background: linear-gradient(90deg, #fff 70%, #e00 100%, #fff 100%);
+    border-radius: 14px 14px 0 0;
+    margin-bottom: 2px;
+}
+
+.profile-menu-item {
+    padding: 14px 26px;
+    font-size: 1.09em;
+    color: #222;
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.14s, color 0.14s;
+    border-bottom: 1px solid #f7eeee;
+}
+
+    .profile-menu-item:last-child {
+        border-radius: 0 0 14px 14px;
+        border-bottom: none;
+    }
+
+    .profile-menu-item:hover {
+        background: #fdeaea;
+        color: #e00;
+    }
+
+/* ----------- MODAL TASARIMLARI & SİPARİŞ MODALI ----------- */
+.modal-bg {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.55);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 430px;
+    min-width: 310px;
+    padding: 32px 28px 26px 28px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.17);
+    position: relative;
+    text-align: left;
+}
+
+.modal-title {
+    color: #e00;
+    font-size: 1.33em;
+    margin-bottom: 18px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    font-size: 1.4em;
+    color: #e00;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#orders-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    #orders-list li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 1.05em;
+    }
+
+        #orders-list li:last-child {
+            border-bottom: none;
+        }
+
+    #orders-list button {
+        background: #e00;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 5px 14px;
+        cursor: pointer;
+        font-size: 0.95em;
+        transition: background 0.15s;
+    }
+
+        #orders-list button:hover {
+            background: #c00;
+        }
+
+/* ----------- ARAMA KUTUSU MODERNLEŞTİRME ----------- */
+.search-input {
+    padding: 12px 18px;
+    border: 1.5px solid #e00;
+    border-radius: 24px;
+    font-size: 1.08em;
+    outline: none;
+    margin-left: 16px;
+    background: #fff;
+    transition: border-color 0.14s;
+    box-shadow: 0 2px 14px rgba(224,0,0,0.04);
+    width: 260px;
+    max-width: 88vw;
+}
+
+    .search-input:focus {
+        border-color: #a00;
+        box-shadow: 0 4px 22px rgba(224,0,0,0.09);
+    }
+
+/* ----------- RESPONSIVE MEDIA QUERIES ----------- */
+@media (max-width: 1200px) {
+    .products {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+    .cart-section {
+        margin: 20px 18px 25px 18px;
+    }
+
+    .section-title {
+        margin-left: 23px !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .products {
+        grid-template-columns: repeat(2, 1fr);
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    .cart-section {
+        margin: 20px 8px 25px 8px;
+    }
+
+    .section-title {
+        margin-left: 7px !important;
+    }
+
+    .search-input {
+        width: 170px;
+        font-size: 1em;
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .products {
+        grid-template-columns: 1fr;
+        padding: 0 8px 32px 8px !important;
+    }
+
+    .container-full {
+        padding: 0;
+    }
+
+    header, .section-title {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .section-title {
+        margin-left: 2px !important;
+    }
+
+    .modal-content {
+        padding: 18px 6vw 12px 6vw;
+    }
+
+    .search-input {
+        width: 98vw;
+        max-width: 98vw;
+        margin-left: 0;
+        font-size: 0.98em;
+        padding: 9px 12px;
+    }
+}

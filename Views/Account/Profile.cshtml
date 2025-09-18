@@ -1,0 +1,98 @@
+﻿@model PixnoriaStore.Models.User
+@{
+    Layout = null;
+    var success = TempData["Success"] as string ?? "";
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Bilgilerim - PixnoriaStore</title>
+    <style>
+        .logout-btn {
+            width: 100%;
+            background: #666;
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0.8rem 0;
+            margin-top: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+            .logout-btn:hover {
+                background: #555;
+            }
+        /* Diğer CSS kodların aynı kalabilir */
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="form-title">Kullanıcı Bilgilerim</h1>
+        @if (!string.IsNullOrEmpty(success))
+        {
+            <div class="message success-message" id="successMessage" role="alert" style="display: block;">@success</div>
+        }
+        <div class="message error-message" id="errorMessage" role="alert"></div>
+        <div class="info-text">
+            @if (Model != null)
+            {
+                <div>Kayıt Tarihi: @Model.KayitTarihi.ToString("dd.MM.yyyy HH:mm")</div>
+                if (Model.SonGirisTarihi != null)
+                {
+                    <div>Son Giriş: @Model.SonGirisTarihi.Value.ToString("dd.MM.yyyy HH:mm")</div>
+                }
+            }
+        </div>
+        <form id="profileForm" method="POST" asp-action="Profile" asp-controller="Account" novalidate>
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label class="form-label" for="Ad">Ad</label>
+                <input asp-for="Ad" class="form-input" required />
+                <span asp-validation-for="Ad" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Soyad">Soyad</label>
+                <input asp-for="Soyad" class="form-input" required />
+                <span asp-validation-for="Soyad" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Email">E-posta</label>
+                <input asp-for="Email" class="form-input" readonly />
+                <span asp-validation-for="Email" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Telefon">Telefon</label>
+                <input asp-for="Telefon" class="form-input"
+                       pattern="^05\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$"
+                       placeholder="05XX XXX XX XX" />
+                <span asp-validation-for="Telefon" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="DogumTarihi">Doğum Tarihi</label>
+                <input asp-for="DogumTarihi" class="form-input"
+                       type="date"
+                       max="@DateTime.Now.ToString("yyyy-MM-dd")"
+                       min="@DateTime.Now.AddYears(-100).ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="DogumTarihi" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Adres">Adres</label>
+                <textarea asp-for="Adres" class="form-input" rows="3"></textarea>
+                <span asp-validation-for="Adres" class="field-validation-error"></span>
+            </div>
+            <div class="loading" id="loading" style="display:none;">Güncelleniyor...</div>
+            <button type="submit" class="form-btn" id="updateBtn">Bilgilerimi Güncelle</button>
+        </form>
+        <button type="button" class="logout-btn" onclick="window.location.href='@Url.Action("Logout", "Account")'">Çıkış Yap</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.13/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

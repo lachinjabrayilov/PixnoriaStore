@@ -1,0 +1,407 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepetim | Pixnoria Store</title>
+    <style>
+        body {
+            margin: 0;
+            background: #f7f8fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #181818;
+        }
+
+        .cart-header {
+            background: #fff;
+            box-shadow: 0 2px 12px #e004;
+            padding: 24px 0 18px 0;
+            text-align: center;
+            border-bottom-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
+
+        .cart-logo {
+            font-size: 2.2em;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #e00;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        .cart-logo-black {
+            font-size: 2.2em; /* Store yazısı da aynı boyda! */
+            font-weight: 900;
+            color: #222;
+            vertical-align: middle;
+        }
+
+        .cart-search {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+            .cart-search input {
+                width: 340px;
+                padding: 14px 18px;
+                border-radius: 10px;
+                border: 2px solid #e00;
+                font-size: 1.1em;
+                background: #f3f3f3;
+                color: #222;
+                box-shadow: 0 1px 5px #e003;
+                outline: none;
+            }
+
+        .cart-container {
+            max-width: 920px;
+            margin: 32px auto 0 auto;
+            padding: 0 18px;
+        }
+
+        .cart-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #e00;
+            margin-bottom: 26px;
+            text-align: left;
+        }
+
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .cart-item-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 18px #e004;
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+        }
+
+        .cart-item-imgbox {
+            width: 100px;
+            height: 100px;
+            background: #eee;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .cart-item-img {
+            max-width: 90px;
+            max-height: 90px;
+            border-radius: 8px;
+            background: #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+            .cart-item-info h3 {
+                font-size: 1.18em;
+                margin: 0 0 4px 0;
+                color: #e00;
+                font-weight: 800;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .cart-item-info .brand {
+                font-size: 1em;
+                color: #333;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+
+            .cart-item-info .desc {
+                font-size: 0.97em;
+                color: #555;
+                margin-bottom: 7px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .cart-item-info .specs {
+                font-size: 0.93em;
+                color: #666;
+                margin-bottom: 6px;
+            }
+
+        .cart-item-qtybox {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            background: #fafafa;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            padding: 3px 8px;
+            margin-right: 16px;
+        }
+
+        .cart-qty-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: #fff;
+            color: #e00;
+            font-size: 1.7em;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+
+            .cart-qty-btn:hover {
+                background: #fdeaea;
+            }
+
+        .cart-item-qty {
+            font-size: 1.13em;
+            font-weight: 700;
+            color: #222;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .cart-item-price {
+            font-size: 1.17em;
+            color: #e00;
+            font-weight: 900;
+            margin-left: 10px;
+        }
+
+        .cart-delete-btn {
+            background: none;
+            border: none;
+            color: #e00;
+            font-size: 1.35em;
+            cursor: pointer;
+            margin-left: 18px;
+            transition: color 0.18s;
+        }
+
+            .cart-delete-btn:hover {
+                color: #c00;
+            }
+
+        .cart-summary {
+            margin-top: 36px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px #e003;
+            padding: 20px 24px;
+            text-align: right;
+        }
+
+        .cart-total-label {
+            font-size: 1.12em;
+            font-weight: 700;
+            color: #222;
+            margin-right: 10px;
+        }
+
+        .cart-total-price {
+            font-size: 1.35em;
+            color: #e00;
+            font-weight: 900;
+        }
+
+        .checkout-btn {
+            background: linear-gradient(90deg, #e00 0%, #fff 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 38px;
+            margin-top: 20px;
+            font-weight: 800;
+            font-size: 1.12em;
+            cursor: pointer;
+            transition: background 0.17s, color 0.17s, transform 0.16s;
+            box-shadow: 0 2px 12px #e004;
+        }
+
+            .checkout-btn:hover {
+                background: linear-gradient(90deg, #fff 0%, #e00 100%);
+                color: #e00;
+                transform: scale(1.05);
+            }
+
+        .empty-cart {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px #e003;
+            padding: 48px 24px;
+            text-align: center;
+            font-size: 1.18em;
+            color: #222;
+            margin-top: 40px;
+        }
+
+            .empty-cart a {
+                color: #e00;
+                text-decoration: underline;
+                font-weight: bold;
+            }
+    </style>
+</head>
+<body>
+    <div class="cart-header">
+        <span class="cart-logo">Pixnoria</span><span class="cart-logo-black">Store</span>
+        <div class="cart-search">
+            <input type="text" id="cart-search-input" placeholder="Sepette ürün ara..." oninput="searchCartProducts()" />
+        </div>
+    </div>
+    <div class="cart-container">
+        <div class="cart-title">Sepetim</div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="empty-cart" id="empty-cart" style="display:none;">
+            🛒 Sepetinizde ürün bulunmamaktadır! <br> Alışverişe devam etmek için <a href="/Home/Index">buraya tıklayın</a>.
+        </div>
+        <div class="cart-summary" id="cart-summary" style="display:none;">
+            <span class="cart-total-label">Toplam:</span>
+            <span class="cart-total-price" id="cart-total">0 TL</span>
+            <br>
+            <button class="checkout-btn" onclick="completeOrder()">Siparişi Tamamla</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let filteredCart = [...cart];
+        let allProducts = window.allProducts || [];
+
+        function renderCartItems() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartSummary = document.getElementById('cart-summary');
+            const emptyCartDiv = document.getElementById('empty-cart');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            if (filteredCart.length === 0) {
+                cartItemsContainer.style.display = "none";
+                cartSummary.style.display = "none";
+                emptyCartDiv.style.display = "block";
+                return;
+            }
+            cartItemsContainer.style.display = "flex";
+            cartSummary.style.display = "block";
+            emptyCartDiv.style.display = "none";
+
+            filteredCart.forEach((item, idx) => {
+                let productDetail = item;
+                if (allProducts.length > 0) {
+                    productDetail = allProducts.find(p => p.name === item.name) || item;
+                }
+                const itemTotal = productDetail.price * (item.quantity || 1);
+                total += itemTotal;
+
+                cartItemsContainer.innerHTML += `
+                    <div class="cart-item-card" data-id="${item.id || item.Id || item.urunId}">
+                        <div class="cart-item-imgbox">
+                            <img src="/images/${productDetail.img || 'default.jpg'}" alt="${productDetail.name}" class="cart-item-img"
+                                onerror="this.src='https://dummyimage.com/90x90/333/fff&text=Görsel+Yok';" />
+                        </div>
+                        <div class="cart-item-info">
+                            <h3>${productDetail.name}</h3>
+                            <div class="brand">${productDetail.brand || ""}</div>
+                            <div class="desc">${productDetail.desc || ""}</div>
+                            <div class="specs">${(productDetail.specs || []).slice(0,2).join(' / ')}</div>
+                        </div>
+                        <div class="cart-item-qtybox">
+                            <button class="cart-qty-btn" onclick="updateQuantity(${idx}, -1)">&#8722;</button>
+                            <span class="cart-item-qty">${item.quantity || 1}</span>
+                            <button class="cart-qty-btn" onclick="updateQuantity(${idx}, 1)">&#43;</button>
+                        </div>
+                        <div class="cart-item-price">${itemTotal.toLocaleString('tr-TR')} TL</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('cart-total').textContent = `${total.toLocaleString('tr-TR')} TL`;
+        }
+
+        function searchCartProducts() {
+            const searchTerm = document.getElementById('cart-search-input').value.toLowerCase();
+            if (!searchTerm) {
+                filteredCart = [...cart];
+            } else {
+                filteredCart = cart.filter(item =>
+                    item.name.toLowerCase().includes(searchTerm) ||
+                    (item.brand && item.brand.toLowerCase().includes(searchTerm)) ||
+                    (item.desc && item.desc.toLowerCase().includes(searchTerm))
+                );
+            }
+            renderCartItems();
+        }
+
+        function updateQuantity(idx, change) {
+            let item = filteredCart[idx];
+            let originalIdx = cart.findIndex(c => c.name === item.name);
+            let newQty = (item.quantity || 1) + change;
+            if (newQty < 1) newQty = 1;
+            cart[originalIdx].quantity = newQty;
+            filteredCart[idx].quantity = newQty;
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCartItems();
+        }
+
+        function completeOrder() {
+            if (cart.length === 0) {
+                alert('Sepetiniz boş, sipariş veremezsiniz.');
+                return;
+            }
+
+            const sepetUrunleri = cart.map(item => ({
+                UrunId: item.id || item.Id || item.urunId,
+                Adet: item.quantity || 1
+            }));
+
+            fetch("/Order/CompleteOrder", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(sepetUrunleri)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    localStorage.removeItem('cart');
+                    cart = [];
+                    filteredCart = [];
+                    renderCartItems();
+                } else {
+                    alert(data.message || "Sipariş oluşturulamadı!");
+                }
+            })
+            .catch(err => {
+                console.error("Sipariş hatası:", err);
+                alert("Sipariş sırasında hata oluştu!");
+            });
+        }
+
+        window.onload = function() {
+            renderCartItems();
+        };
+    </script>
+
+
+</body>
+</html>

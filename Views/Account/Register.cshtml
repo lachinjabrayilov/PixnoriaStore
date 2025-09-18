@@ -1,0 +1,124 @@
+﻿@model PixnoriaStore.Models.User
+@{
+    Layout = null;
+    var error = ViewBag.Error as string ?? "";
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Üye Ol</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background: #f7f7f7;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-container {
+            max-width: 440px;
+            background: #fff;
+            border-radius: 30px;
+            box-shadow: 0 6px 28px rgba(224,60,25,0.11);
+            padding: 44px 38px;
+        }
+
+        .form-title {
+            color: #ed3c19;
+            font-size: 2.3em;
+            font-weight: 900;
+            margin-bottom: 38px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 27px;
+        }
+
+        .form-label {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #ed3c19;
+            margin-bottom: 7px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #ed3c19;
+            border-radius: 18px;
+        }
+
+        .form-btn {
+            width: 100%;
+            background: #ed3c19;
+            color: #fff;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px 0;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 1em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .field-validation-error {
+            color: red;
+            font-size: 0.95em;
+            margin-top: 4px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-title">Üye Ol</div>
+        @if (!string.IsNullOrEmpty(error))
+        {
+            <div class="error-message">@error</div>
+        }
+        <form asp-action="Register" method="post" autocomplete="off">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "error-message" })
+            <div class="form-group">
+                <label class="form-label" for="Ad">Ad</label>
+                <input asp-for="Ad" name="Ad" class="form-input" />
+                <span asp-validation-for="Ad" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Soyad">Soyad</label>
+                <input asp-for="Soyad" name="Soyad" class="form-input" />
+                <span asp-validation-for="Soyad" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Email">E-posta</label>
+                <input asp-for="Email" name="Email" class="form-input" type="email" />
+                <span asp-validation-for="Email" class="field-validation-error"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="Sifre">Şifre</label>
+                <input asp-for="Sifre" name="Sifre" class="form-input" type="password" />
+                <span asp-validation-for="Sifre" class="field-validation-error"></span>
+            </div>
+            <button type="submit" class="form-btn">Kayıt Ol</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.13/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

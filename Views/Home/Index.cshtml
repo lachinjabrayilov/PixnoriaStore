@@ -1,0 +1,1227 @@
+﻿@{
+    Layout = null;
+    var isLoggedIn = User.Identity.IsAuthenticated;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixnoriaStore</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .main-bg {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            width: 100%;
+            background: #fff;
+            border-radius: 0 0 0 0;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            padding: 0;
+            transition: transform 0.3s ease;
+        }
+
+            header.scrolled {
+                transform: translateY(-10px);
+            }
+
+        .logo-center {
+            text-align: center;
+            font-size: 2.7em;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 0;
+            padding: 20px 0 10px 0;
+            text-shadow: 0 2px 13px rgba(0, 0, 0, 0.1);
+            user-select: none;
+        }
+
+            .logo-center .pixnoria {
+                color: #e00;
+            }
+
+            .logo-center .store {
+                color: #333;
+            }
+
+        .header-actions {
+            position: absolute;
+            top: 35px;
+            right: 42px;
+            display: flex;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+        }
+
+            .icon-btn svg {
+                width: 32px;
+                height: 32px;
+                fill: #333;
+                filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.1));
+                transition: fill 0.18s, transform 0.2s;
+            }
+
+            .icon-btn:hover svg {
+                transform: scale(1.25);
+                filter: drop-shadow(0 1px 16px rgba(224, 0, 0, 0.5));
+            }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e00;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7em;
+        }
+
+        nav {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+            border-radius: 0 0 0 0;
+            border-bottom: 4px solid #e00;
+            position: relative;
+            z-index: 3;
+            box-sizing: border-box;
+        }
+
+        .nav-home-btn {
+            margin-right: 30px;
+            background: #e00;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 22px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 1px 10px rgba(224, 0, 0, 0.5);
+            transition: background 0.15s, color 0.15s, transform 0.13s;
+        }
+
+            .nav-home-btn:hover {
+                background: #fff;
+                color: #e00;
+                border: 2px solid #e00;
+                transform: scale(1.06);
+            }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 36px;
+            margin: 0;
+            padding: 0;
+            background: none;
+        }
+
+            .nav-menu a {
+                color: #e00;
+                font-weight: 700;
+                font-size: 1.18em;
+                text-decoration: none;
+                padding: 12px 22px;
+                border-radius: 10px;
+                border: 2px solid transparent;
+                background: #fff;
+                transition: background 0.2s, color 0.2s, border 0.2s;
+            }
+
+                .nav-menu a:hover, .nav-menu .active {
+                    background: #fff;
+                    color: #e00;
+                    border: 2px solid #e00;
+                }
+
+            .nav-menu .active {
+                font-weight: 900;
+            }
+
+        .search-box {
+            padding: 12px 21px;
+            border-radius: 10px;
+            border: 2px solid #e00;
+            font-size: 1.12em;
+            width: 290px;
+            background: #fff;
+            color: #333;
+            margin-left: 26px;
+            box-sizing: border-box;
+            height: 49px;
+            transition: border 0.18s;
+        }
+
+        .section-title {
+            margin: 80px 0 20px 60px;
+            font-size: 2.1em;
+            color: #e00;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(224, 0, 0, 0.15);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 60px 32px 60px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 2px solid #e00;
+            border-radius: 15px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+            padding: 28px 19px 18px 19px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: transform 0.17s, box-shadow 0.17s, border 0.17s;
+        }
+
+            .product-card:hover {
+                transform: translateY(-8px) scale(1.04);
+                box-shadow: 0 12px 44px rgba(0, 0, 0, 0.2);
+                border-color: #a00;
+            }
+
+        .fav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            outline: none;
+        }
+
+            .fav-btn svg {
+                width: 28px;
+                height: 28px;
+                vertical-align: middle;
+                transition: fill 0.18s, transform 0.19s;
+                fill: #fff;
+                filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.1));
+            }
+
+            .fav-btn:hover svg {
+                transform: scale(1.25);
+                filter: drop-shadow(0 1px 16px rgba(224, 0, 0, 0.5));
+            }
+
+            .fav-btn.fav svg {
+                fill: #e00;
+            }
+
+        .product-imgbox {
+            min-width: 140px;
+            max-width: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eee;
+            border-radius: 11px;
+            margin-bottom: 13px;
+        }
+
+        .product-img {
+            width: 140px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 11px;
+            background: #eee;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-info h3 {
+            font-weight: 800;
+            font-size: 1.16em;
+            margin-bottom: 7px;
+            color: #e00;
+            text-align: center;
+        }
+
+        .spec-list {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 8px;
+            text-align: left;
+            padding-left: 18px;
+        }
+
+        .price {
+            color: #e00 !important;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .old-price {
+            color: #aaa !important;
+            text-decoration: line-through;
+            font-size: 0.97em;
+            margin-right: 7px;
+        }
+
+        .indirim-box {
+            color: #fff;
+            background: #e00;
+            font-weight: bold;
+            font-size: 0.96em;
+            border-radius: 8px;
+            padding: 2px 8px 1px 8px;
+            margin-left: 6px;
+        }
+
+        .stok-yok {
+            background: #e00;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 6px 18px;
+            margin-bottom: 7px;
+            font-size: 1em;
+        }
+
+        .stok-var {
+            background: #333;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 6px 18px;
+            margin-bottom: 7px;
+            font-size: 1em;
+        }
+
+        .buy-btn {
+            background: linear-gradient(90deg, #e00 0%, #fff 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            margin-top: 7px;
+            font-weight: 700;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, transform 0.16s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+            .buy-btn:hover {
+                background: linear-gradient(90deg, #fff 0%, #e00 100%);
+                color: #e00;
+                transform: scale(1.09);
+            }
+
+            .buy-btn:active {
+                transform: scale(0.98);
+            }
+
+            .buy-btn:disabled {
+                background: #eee !important;
+                color: #bbb !important;
+                cursor: not-allowed;
+            }
+
+        .marka-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .marka-btn {
+            border: 2px solid #e00 !important;
+            background: #fff !important;
+            color: #e00 !important;
+            border-radius: 8px;
+            font-weight: 700;
+            padding: 7px 16px;
+            font-size: 1.09em;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+        }
+
+            .marka-btn.selected, .marka-btn:hover {
+                background: #e00 !important;
+                color: #fff !important;
+            }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 1.09em;
+            font-weight: 700;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+            margin-top: 30px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-bg {
+            display: none;
+            position: fixed;
+            z-index: 99;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            align-items: center;
+            justify-content: center;
+        }
+
+            .modal-bg[style*="display: flex"] {
+                display: flex !important;
+            }
+
+        .modal-content {
+            background: #fff !important;
+            color: #333 !important;
+            border: 2px solid #eee;
+            border-radius: 20px;
+            max-width: 480px;
+            min-width: 320px;
+            position: relative;
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.1);
+            padding: 28px 24px 22px 24px;
+        }
+
+        .modal-title {
+            color: #333 !important;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 1.6em;
+            color: #e00 !important;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .fav-list-img {
+            width: 50px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: 6px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .kategori-alt-menu {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 10px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 0;
+            border: 2px solid #e00;
+        }
+
+        .nav-menu li:hover .kategori-alt-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .kategori-alt-menu a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 1em;
+            font-weight: normal;
+            border: none;
+            background: none;
+            transition: background-color 0.15s, color 0.15s;
+        }
+
+            .kategori-alt-menu a:hover {
+                background-color: #e00;
+                color: #fff;
+                border-radius: 0;
+            }
+
+        .order-products {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+            .order-products h3 {
+                margin-bottom: 10px;
+                color: #e00;
+            }
+
+            .order-products ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            .order-products li {
+                margin-bottom: 5px;
+            }
+
+        .user-info {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+            .user-info h2 {
+                margin-top: 0;
+            }
+
+            .user-info p {
+                margin: 10px 0;
+            }
+
+        .profile-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: #fff;
+            box-shadow: 0 4px 24px rgba(224, 0, 0, 0.3);
+            border-radius: 12px;
+            min-width: 210px;
+            z-index: 99;
+            padding: 8px 0;
+            margin-top: 8px;
+        }
+
+        .profile-menu-item {
+            padding: 13px 22px;
+            font-size: 1.07em;
+            color: #222;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.2s;
+        }
+
+            .profile-menu-item:hover {
+                background-color: #f5f5f5;
+            }
+
+        .premium-label {
+            color: #e00;
+            font-weight: bold;
+            text-align: center;
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-bg">
+        <div class="container-full">
+            <header id="main-header">
+                <div class="logo-center">
+                    <span class="pixnoria">Pixnoria</span><span class="store">Store</span>
+                </div>
+                <div class="header-actions">
+                    <div class="profile-wrapper">
+                        <button id="profile-btn" type="button" class="icon-btn profile">
+                            <svg viewBox="0 0 24 24" width="32" height="32">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                            </svg>
+                        </button>
+                        <div id="profile-menu" class="profile-menu">
+                            <span class="premium-label">Premium</span>
+                            @if (!isLoggedIn)
+                            {
+                                <div id="menu-auth">
+                                    <button class="profile-menu-item" onclick="window.location.href='/Account/Login'">Giriş Yap</button>
+                                    <button class="profile-menu-item" onclick="window.location.href='/Account/Register'">Üye Ol</button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="menu-user">
+                                    <button class="profile-menu-item" onclick="window.location.href='/Order/AllOrders'">Tüm Siparişlerim</button>
+                                    <button class="profile-menu-item" onclick="window.location.href='/Account/Logout'">Çıkış Yap</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <a href="/Favorites/MyFavorites" class="icon-btn" title="Favorilerim" id="fav-btn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 21s-7.4-5.3-9.6-8.2C-1.3 8.6 2.2 3 7.7 3 10.2 3 12 5.2 12 5.2S13.8 3 16.3 3c5.5 0 9 5.6 5.3 9.8C19.4 15.7 12 21 12 21z" />
+                        </svg>
+                    </a>
+                    <button class="cart-btn icon-btn" onclick="openCartPage()" title="Sepetim">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-0.9-2-2-2zm0 2zM1 2v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7.42c-0.14 0-0.25-0.11-0.25-0.25l0.03-0.12 1.1-2h7.45c0.75 0 1.41-0.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20.42 4H5.21l-0.94-2H1z" />
+                        </svg>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </button>
+                </div>
+                <nav>
+                    <button class="nav-home-btn" onclick="showMain()">Ana Sayfa</button>
+                    <ul class="nav-menu">
+                        <li style="position: relative;">
+                            <a href="#" id="nav-kategori" onclick="showSection('kategori',event)">Kategoriler</a>
+                            <div class="kategori-alt-menu">
+                                <a href="#" onclick="showCategory('laptop', event)">Laptop</a>
+                                <a href="#" onclick="showCategory('sistem-birimleri', event)">Sistem Birimleri</a>
+                                <a href="#" onclick="showCategory('klavyeler', event)">Klavyeler</a>
+                                <a href="#" onclick="showCategory('kulakliklar', event)">Kulaklıklar</a>
+                                <a href="#" onclick="showCategory('mouse', event)">Mouse</a>
+                                <a href="#" onclick="showCategory('monitors', event)">Monitörler</a>
+                            </div>
+                        </li>
+                        <li><a href="#" id="nav-kampanya" onclick="showSection('kampanya',event)">Kampanyalar</a></li>
+                        <li><a href="#" id="nav-marka" onclick="showSection('marka',event)">Markalarımız</a></li>
+                        <li><a href="#" id="nav-firsat" onclick="showSection('firsat',event)">Fırsat Köşesi</a></li>
+                    </ul>
+                    <input type="text" class="search-box" placeholder="Ürün, model veya marka ara..." id="searchBox" oninput="searchProducts()">
+                </nav>
+            </header>
+            <main style="margin-top: 150px;">
+                <div class="marka-list" id="marka-container">
+                    <button class="marka-btn">HP</button>
+                    <button class="marka-btn">Lenovo</button>
+                    <button class="marka-btn">Dell</button>
+                    <button class="marka-btn">Apple</button>
+                    <button class="marka-btn">ASUS</button>
+                    <button class="marka-btn">MSI</button>
+                    <button class="marka-btn">Alienware</button>
+                    <button class="marka-btn">LG</button>
+                    <button class="marka-btn">Razer</button>
+                    <button class="marka-btn">Toshiba</button>
+                </div>
+                <h2 class="section-title" id="main-title">Laptop Modelleri</h2>
+                <section class="products" id="products"></section>
+            </main>
+            <footer>
+                <p>&copy; 2025 PixnoriaStore | Tüm hakları saklıdır.</p>
+            </footer>
+        </div>
+    </div>
+    <div id="cart-modal" style="display:none;">
+        <div id="cart-modal-content">
+            <button id="cart-modal-close" onclick="closeCartModal()">&times;</button>
+            <h2 style="color:#e00;text-align:center;margin-top:0;">Sepetiniz</h2>
+            <ul id="cart-modal-items"></ul>
+            <div id="cart-modal-total"></div>
+            <button id="complete-order-modal" class="buy-btn" onclick="completeOrder()">Siparişi Tamamla</button>
+        </div>
+    </div>
+    <div id="orders-modal" class="modal-bg" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeOrdersModal()">&times;</button>
+            <h2 class="modal-title">Tüm Siparişlerim</h2>
+            <ul id="orders-list"></ul>
+        </div>
+    </div>
+    <div id="order-complete-modal" style="display:none;">
+        <div id="order-complete-content">
+            <button id="order-complete-close" onclick="closeOrderCompleteModal()">&times;</button>
+            <h2 style="color:#e00;text-align:center;margin-top:0;">Siparişiniz Tamamlandı</h2>
+            <p style="text-align:center;">Siparişiniz başarıyla tamamlandı. Teşekkür ederiz!</p>
+            <div class="order-products">
+                <h3>Siparişinizdeki Ürünler:</h3>
+                <ul id="order-products-list"></ul>
+            </div>
+        </div>
+    </div>
+    <div id="user-info" class="user-info">
+        <h2>Kullanıcı Bilgilerim</h2>
+        <p><strong>Ad:</strong> <span id="user-name"></span></p>
+        <p><strong>Soyad:</strong> <span id="user-surname"></span></p>
+        <p><strong>E-posta:</strong> <span id="user-email"></span></p>
+        <p><strong>Cep Telefonu:</strong> <span id="user-phone"></span></p>
+        <p><strong>Doğum Tarihi:</strong> <span id="user-birthdate"></span></p>
+    </div>
+    <script>
+        const laptops = [
+            {id: 1, name: "HP Pavilion", brand: "HP", img: "HP Pavilion.jpg", price: 34000, stock: 0, desc: "Güçlü performans, uygun fiyat!", specs: ["İşlemci: Intel Core i5", "Ekran: 15.6\" FHD IPS", "RAM: 8GB DDR4", "Depolama: 512GB SSD", "GPU: Intel Iris Xe", "İşletim Sistemi: Windows 11", "Pil Ömrü: 8 saat"]},
+            {id: 2, name: "Lenovo IdeaPad", brand: "Lenovo", img: "Lenovo IdeaPad.jpg", price: 22500, stock: 3, desc: "Hafif ve taşınabilir, her yere seninle!", specs: ["İşlemci: Intel Core i3", "Ekran: 14\" HD", "RAM: 4GB DDR4", "Depolama: 128GB SSD", "GPU: Intel UHD", "İşletim Sistemi: Windows 11", "Pil Ömrü: 7 saat"]},
+            {id: 3, name: "Dell Inspiron", brand: "Dell", img: "Dell Inspiron.jpg", price: 73000, stock: null, desc: "İş ve eğlence için ideal!", specs: ["İşlemci: Intel Core i7", "Ekran: 15.6\" FHD IPS", "RAM: 16GB DDR4", "Depolama: 1TB SSD", "GPU: NVIDIA MX550", "İşletim Sistemi: Windows 11", "Pil Ömrü: 8 saat"]},
+            {id: 4, name: "MacBook Air (M1/M2)", brand: "Apple", img: "MacBook Air.jpg", price: 129000, stock: null, desc: "Apple inceliği ve hızını keşfet!", specs: ["İşlemci: Apple M2", "Ekran: 13.6\" Retina", "RAM: 8GB", "Depolama: 256GB SSD", "GPU: 8 Çekirdekli GPU", "İşletim Sistemi: macOS", "Pil Ömrü: 15 saat"]},
+            {id: 5, name: "ASUS ROG (Gaming)", brand: "ASUS", img: "ASUS ROG.jpg", price: 138000, stock: 2, desc: "Oyun için maksimum güç ve kalite!", specs: ["İşlemci: Intel Core i9", "Ekran: 17.3\" QHD, 240Hz", "RAM: 32GB DDR5", "Depolama: 1TB NVMe SSD", "GPU: NVIDIA RTX 3080", "İşletim Sistemi: Windows 11", "RGB Aydınlatma: Evet"]},
+            {id: 6, name: "MSI Stealth (Gaming)", brand: "MSI", img: "MSI Stealth.jpg", price: 65000, stock: null, desc: "Gizli güç, şık tasarım!", specs: ["İşlemci: Intel Core i7", "Ekran: 15.6\" QHD, 240Hz", "RAM: 16GB DDR5", "Depolama: 1TB NVMe SSD", "GPU: NVIDIA RTX 3070", "İşletim Sistemi: Windows 11", "Ağırlık: 1.8 kg"]},
+            {id: 7, name: "Alienware (Premium Gaming)", brand: "Alienware", img: "Alienware.jpg", price: 140000, stock: 1, desc: "Uzay çağında oyun deneyimi!", specs: ["İşlemci: AMD Ryzen 9", "Ekran: 17.3\" QHD, 360Hz", "RAM: 64GB DDR5", "Depolama: 2TB NVMe SSD", "GPU: NVIDIA RTX 4090", "İşletim Sistemi: Windows 11", "RGB: AlienFX"]},
+            {id: 8, name: "LENOVO Legion (Gaming)", brand: "Lenovo", img: "LENOVO Legion.jpg", price: 112000, stock: 0, desc: "Yenilikçi teknoloji, modern tasarım!", specs: ["İşlemci: AMD Ryzen 7", "Ekran: 16\" WQXGA, 165Hz", "RAM: 16GB DDR5", "Depolama: 1TB NVMe SSD", "GPU: NVIDIA RTX 3070 Ti", "Soğutma: Legion Coldfront"]},
+            {id: 9, name: "LG Gram (Ultra Hafif)", brand: "LG", img: "LG Gram.jpg", price: 39000, stock: null, desc: "Süper hafif, ultra taşınabilir!", specs: ["İşlemci: Intel Core i5", "Ekran: 16\" WQXGA", "RAM: 16GB LPDDR5", "Depolama: 512GB SSD", "Ağırlık: 999 gram", "Pil Ömrü: 20 saat"]},
+            {id: 10, name: "HP ProBook (İş Dizüstü)", brand: "HP", img: "HP ProBook.jpg", price: 21000, stock: 2, desc: "İş dünyası için güvenli tercih!", specs: ["İşlemci: AMD Ryzen 5 PRO", "Ekran: 15.6\" FHD", "RAM: 8GB DDR4", "Depolama: 512GB SSD", "Güvenlik: Parmak İzi Okuyucu"]},
+            {id: 11, name: "Razer Blade (Premium Gaming)", brand: "Razer", img: "Razer Blade.jpg", price: 116000, stock: null, desc: "Gaming dünyasında üst düzey performans!", specs: ["İşlemci: Intel Core i9", "Ekran: 15.6\" QHD, 240Hz", "RAM: 32GB DDR5", "Depolama: 1TB NVMe SSD", "GPU: NVIDIA RTX 3080 Ti", "Kasa: CNC Alüminyum"]},
+            {id: 12, name: "Toshiba Tecra (İş Laptopu)", brand: "Toshiba", img: "Toshiba Tecra.jpg", price: 28000, stock: null, desc: "Dayanıklı ve uzun ömürlü laptop!", specs: ["İşlemci: Intel Core i7", "Ekran: 15.6\" FHD", "RAM: 16GB DDR4", "Depolama: 256GB SSD + 1TB HDD", "Portlar: HDMI, USB-C, RJ-45"]}
+        ];
+        const systemUnits = [
+            {id: 13, name: "Corsair iCUE", brand: "Corsair", img: "Corsair iCUE.jpg", price: 95000, stock: null, desc: "RGB aydınlatma ve yüksek performanslı kasa.", specs: ["RGB Kontrolü", "Sıvı Soğutma Desteği", "Temperli Cam"]},
+            {id: 14, name: "Fractal Meshify", brand: "Fractal Design", img: "Fractal Meshify.jpg", price: 45000, stock: 2, desc: "Üstün hava akışı için optimize edilmiş tasarım.", specs: ["Yüksek Hava Akışı", "Modüler İç Tasarım", "Geniş Uyumlu"]},
+            {id: 15, name: "Lancool", brand: "Lian Li", img: "Lancool.jpg", price: 58000, stock: null, desc: "Şık ve fonksiyonel ATX mid-tower kasa.", specs: ["Alüminyum Kasa", "Geniş İç Hacim", "Kolay Kablo Yönetimi"]},
+            {id: 16, name: "NanoCube Mini", brand: "Mini-ITX", img: "NanoCube Mini.jpg", price: 28000, stock: null, desc: "Kompakt boyutlarda güçlü sistemler için.", specs: ["Mini-ITX Desteği", "Küçük Form Faktörü", "Taşınabilir"]},
+            {id: 17, name: "Nebula Vanguard", brand: "Nebula", img: "Nebula Vanguard.jpg", price: 110000, stock: 0, desc: "Fütüristik tasarım ve üst düzey bileşenler.", specs: ["Özel Tasarım", "Yüksek Watt PSU", "Entegre Sıvı Soğutma"]},
+            {id: 18, name: "NZXT Elite", brand: "NZXT", img: "NZXT Elite.jpg", price: 82000, stock: 1, desc: "Temiz görünüm ve kolay kurulum.", specs: ["Akıllı Kontrol", "RGB Fanlar", "Basit Kurulum"]},
+            {id: 19, name: "ProDesk Elite", brand: "HP", img: "HP ProBook.jpg", price: 20000, stock: null, desc: "İş istasyonları için güvenilir ve dayanıklı.", specs: ["Endüstriyel Tasarım", "Yüksek Güvenlik", "Enerji Verimliliği"]},
+            {id: 20, name: "Quantum Overlord", brand: "Quantum", img: "Quantum Overlord.jpg", price: 135000, stock: null, desc: "Maksimum performans için tasarlanmış güç merkezi.", specs: ["Çift GPU Desteği", "En İyi Soğutma", "Overclock Uyumlu"]},
+            {id: 21, name: "RenderMaster Pro", brand: "RenderMax", img: "RenderMaster Pro.jpg", price: 70000, stock: 3, desc: "Profesyonel render işlemleri için optimize edildi.", specs: ["Render Odaklı", "Çoklu Depolama Desteği", "Sessiz Çalışma"]},
+            {id: 22, name: "Silent Base", brand: "be quiet!", img: "Silent Base.jpg", price: 35000, stock: null, desc: "Minimum ses seviyesi, maksimum performans.", specs: ["Ses Yalıtımı", "Sessiz Fanlar", "Optimize Edilmiş Hava Akışı"]},
+            {id: 23, name: "StudioPhantom", brand: "Phantom", img: "StudioPhantom.jpg", price: 62000, stock: null, desc: "Sanatçılar ve tasarımcılar için ideal iş istasyonu.", specs: ["Yüksek Grafikler", "Geniş Bellek", "Hızlı Depolama"]},
+            {id: 24, name: "Titan Xtreme", brand: "Titan", img: "Titan Xtreme.jpg", price: 140000, stock: 0, desc: "En zorlu görevler için tasarlanmış ekstrem güç.", specs: ["En Üst Düzey Bileşenler", "Sıvı Soğutmalı", "Aşırı Performans"]}
+        ];
+        const keyboards = [
+            {id: 25, name: "Corsair K70", brand: "Corsair", img: "Corsair K70.jpg", price: 12500, stock: null, desc: "RGB aydınlatmalı mekanik klavye.", specs: ["Mekanik Tuşlar", "RGB Aydınlatma", "Multimedya Tuşları"]},
+            {id: 26, name: "Ducky One 3", brand: "Ducky", img: "Ducky One 3.jpg", price: 9800, stock: 2, desc: "Özelleştirilebilir mekanik klavye.", specs: ["Hot-Swappable Switchler", "Çift Katmanlı PBT Tuş Kapakları", "USB-C"]},
+            {id: 27, name: "Glorious GMMK Pro", brand: "Glorious", img: "Glorious GMMK Pro.jpg", price: 16000, stock: null, desc: "Modüler ve premium mekanik klavye.", specs: ["Gasket Mount", "CNC Alüminyum Gövde", "RGB"]},
+            {id: 28, name: "HP Pavilion K500F", brand: "HP", img: "HP Pavilion K500F.jpg", price: 8200, stock: 0, desc: "Oyun odaklı uygun fiyatlı klavye.", specs: ["Mekanik Hissiyat", "Arka Aydınlatma", "Dayanıklı Tasarım"]},
+            {id: 29, name: "HyperX Alloy Origins", brand: "HyperX", img: "HyperX Alloy Origins.jpg", price: 11500, stock: null, desc: "Dayanıklı ve kompakt oyun klavyesi.", specs: ["Alüminyum Gövde", "RGB Aydınlatma", "HyperX Mekanik Switchler"]},
+            {id: 30, name: "Keychron Q Series", brand: "Keychron", img: "Keychron Q Series.jpg", price: 18500, stock: 1, desc: "Full alüminyum QMK/VIA destekli klavye.", specs: ["Full CNC Alüminyum", "QMK/VIA Desteği", "Gasket Mount"]},
+            {id: 31, name: "Leopold FC750R", brand: "Leopold", img: "Leopold FC750R.jpg", price: 9200, stock: null, desc: "Minimalist ve yüksek kaliteli klavye.", specs: ["PBT Keycaps", "Cherry MX Switchler", "Ses Yalıtımı"]},
+            {id: 32, name: "Logitech G Pro X", brand: "Logitech", img: "Logitech G Pro.jpg", price: 13000, stock: null, desc: "Esports için tasarlanmış çıkarılabilir switchler.", specs: ["GX Clicky/Tactile/Linear Switchler", "Çıkarılabilir Tuşlar", "Lightsync RGB"]},
+            {id: 33, name: "Razer DeathStalker V2 Pro", brand: "Razer", img: "Razer DeathStalker.jpg", price: 14500, stock: null, desc: "Optik switchli ince yapılı klavye.", specs: ["Low-Profile Optik Switchler", "Razer HyperSpeed Wireless", "RGB"]},
+            {id: 34, name: "Razer Huntsman V2", brand: "Razer", img: "Razer Huntsman.jpg", price: 19000, stock: 0, desc: "En hızlı optik mekanik klavye.", specs: ["Razer Optik Switchler", "Manyetik Bilek Desteği", "Çift Katmanlı PBT Tuş Kapakları"]},
+            {id: 35, name: "SteelSeries Apex 7", brand: "SteelSeries", img: "SteelSeries Apex 7.jpg", price: 15500, stock: null, desc: "OLED akıllı ekranlı mekanik klavye.", specs: ["OLED Smart Display", "Dinamik Per-Key RGB", "Uçak Sınıfı Alüminyum Çerçeve"]},
+            {id: 36, name: "Varmilo VA87M", brand: "Varmilo", img: "Varmilo VA87M.jpg", price: 10500, stock: 3, desc: "Sanatsal tasarımlara sahip mekanik klavye.", specs: ["PBT Dye-Sub Keycaps", "Cherry MX Switchler", "Tasarım Odaklı"]}
+        ];
+        const headphones = [
+            {id: 37, name: "Apple AirPods Max", brand: "Apple", img: "Apple AirPods Max.jpg", price: 9999, stock: null, desc: "Yüksek kaliteli ses ve aktif gürültü engelleme.", specs: ["Uzamsal Ses", "Aktif Gürültü Engelleme", "Adaptif EQ"]},
+            {id: 38, name: "ASUS ROG Delta", brand: "ASUS", img: "ASUS ROG Delta.jpg", price: 3500, stock: 2, desc: "Oyun için RGB aydınlatmalı yüksek çözünürlüklü ses.", specs: ["Hi-Res ESS Quad-DAC", "RGB Aydınlatma", "D-şekilli Kulak Yastıkları"]},
+            {id: 39, name: "Audio-Technica ATH-R70x", brand: "Audio-Technica", img: "Audio-Technica ATH-R70x.jpg", price: 8000, stock: null, desc: "Stüdyo ve referans dinleme için açık arkalı kulaklık.", specs: ["Açık Arka Tasarım", "Yüksek Çözünürlüklü Ses", "3D Kanat Destek Sistemi"]},
+            {id: 40, name: "Beyerdynamic DT 1990 Pro", brand: "Beyerdynamic", img: "Beyerdynamic DT 1990 Pro.jpg", price: 9000, stock: 1, desc: "Profesyonel karıştırma ve mastering için referans kulaklık.", specs: ["Tesla Sürücüler", "Açık Tasarım", "Değiştirilebilir Kulak Pedleri"]},
+            {id: 41, name: "Bose SoundLink", brand: "Bose", img: "Bose SoundLink.jpg", price: 4500, stock: null, desc: "Kablosuz ve dengeli ses performansı.", specs: ["Kablosuz Bluetooth", "Hafif Tasarım", "Derin Bas"]},
+            {id: 42, name: "HyperX Cloud Alpha", brand: "HyperX", img: "HyperX Cloud Alpha.jpg", price: 1200, stock: 3, desc: "Çift odacıklı sürücülerle daha fazla netlik.", specs: ["Çift Odacıklı Sürücüler", "Dayanıklı Alüminyum Çerçeve", "Çıkarılabilir Gürültü Engelleyici Mikrofon"]},
+            {id: 43, name: "JBL Quantum 610", brand: "JBL", img: "JBL Quantum 610.jpg", price: 1800, stock: 0, desc: "Kablosuz oyun kulaklığı.", specs: ["QuantumSOUND Signature", "Flip-up Boom Mikrofon", "2.4GHz Kablosuz"]},
+            {id: 44, name: "Razer Barracuda Pro", brand: "Razer", img: "Razer Barracuda Pro.jpg", price: 5500, stock: null, desc: "Hibrit aktif gürültü engellemeli kablosuz kulaklık.", specs: ["Hibrit ANC", "THX Achromatic Audio Amplifier", "SmartSwitch Dual Wireless"]},
+            {id: 45, name: "Samsung Galaxy Buds FE", brand: "Samsung", img: "Samsung Galaxy Buds FE.jpg", price: 900, stock: null, desc: "Rahat uyum ve güçlü bas.", specs: ["Ergonomik Tasarım", "Aktif Gürültü Engelleme", "Güçlü Bas"]},
+            {id: 46, name: "Sennheiser HD 660S2", brand: "Sennheiser", img: "Sennheiser HD 660S2.jpg", price: 7500, stock: 2, desc: "Doğal ve detaylı ses sunan açık arkalı referans kulaklık.", specs: ["Doğal Ses Sahnesi", "Açık Akustik Tasarım", "Düşük Harmonik Bozulma"]},
+            {id: 47, name: "Sony MDR-7506", brand: "Sony", img: "Sony MDR-7506.jpg", price: 600, stock: null, desc: "Stüdyo ve yayıncılık için endüstri standardı.", specs: ["Katlanabilir Tasarım", "Güçlü Neodim Mıknatıslar", "Profesyonel Kullanım"]},
+            {id: 48, name: "SteelSeries Arctis 7", brand: "SteelSeries", img: "SteelSeries Arctis 7.jpg", price: 2500, stock: null, desc: "Kablosuz oyun kulaklığı.", specs: ["Lossless 2.4 GHz Kablosuz", "ClearCast Mikrofon", "DTS Headphone:X v2.0"]}
+        ];
+        const mice = [
+            {id: 49, name: "Anker PowerConf", brand: "Anker", img: "Anker PowerConf.jpg", price: 4500, stock: null, desc: "Profesyonel toplantılar için yüksek hassasiyetli mouse.", specs: ["Bluetooth ve USB", "800/1200/1600 DPI", "Ergonomik Tasarım"]},
+            {id: 50, name: "ASUS ROG Gladius", brand: "ASUS", img: "ASUS ROG Gladius.jpg", price: 2800, stock: 2, desc: "Oyun için optimize edilmiş yüksek performanslı mouse.", specs: ["19000 DPI", "Optik Sensör", "RGB Aydınlatma"]},
+            {id: 51, name: "Corsair Sabre RGB Pro", brand: "Corsair", img: "Corsair Sabre RGB Pro.jpg", price: 3200, stock: null, desc: "Hafif ve hızlı oyun mouse'u.", specs: ["26000 DPI", "8 Programlanabilir Buton", "RGB Aydınlatma"]},
+            {id: 52, name: "Dell MS3220", brand: "Dell", img: "Dell MS3220.jpg", price: 300, stock: 0, desc: "Günlük kullanım için uygun fiyatlı mouse.", specs: ["1000 DPI", "Kablolu", "Ergonomik Tasarım"]},
+            {id: 53, name: "HP Z3700", brand: "HP", img: "HP Z3700.jpg", price: 400, stock: 3, desc: "Kablosuz ve taşınabilir mouse.", specs: ["1200 DPI", "Bluetooth", "Hafif Tasarım"]},
+            {id: 54, name: "HyperX Pulsefire Dart", brand: "HyperX", img: "HyperX Pulsefire Dart.jpg", price: 1500, stock: null, desc: "Oyun için kablosuz mouse.", specs: ["16000 DPI", "RGB Aydınlatma", "Ergonomik Tasarım"]},
+            {id: 55, name: "Lenovo Legion M600", brand: "Lenovo", img: "Lenovo Legion M600.jpg", price: 2000, stock: 1, desc: "Oyun için yüksek performanslı mouse.", specs: ["16000 DPI", "8 Programlanabilir Buton", "RGB Aydınlatma"]},
+            {id: 56, name: "Logitech G903", brand: "Logitech", img: "Logitech G903.jpg", price: 4900, stock: null, desc: "Profesyonel oyun mouse'u.", specs: ["25600 DPI", "Kablosuz ve Kablolu", "RGB Aydınlatma"]},
+            {id: 57, name: "Microsoft Sculpt Ergonomic", brand: "Microsoft", img: "Microsoft Sculpt Ergonomic.jpg", price: 3500, stock: 0, desc: "Ergonomik ve konforlu mouse.", specs: ["1000 DPI", "Kablosuz", "Ergonomik Tasarım"]},
+            {id: 58, name: "Razer Viper V2 Pro", brand: "Razer", img: "Razer Viper V2 Pro.jpg", price: 4000, stock: null, desc: "Hafif ve hızlı oyun mouse'u.", specs: ["30000 DPI", "Optik Switchler", "RGB Aydınlatma"]},
+            {id: 59, name: "SteelSeries Aerox 9", brand: "SteelSeries", img: "SteelSeries Aerox 9.jpg", price: 4500, stock: 2, desc: "Çok butonlu oyun mouse'u.", specs: ["18000 DPI", "12 Programlanabilir Buton", "RGB Aydınlatma"]},
+            {id: 60, name: "SteelSeries Rival 650", brand: "SteelSeries", img: "SteelSeries Rival 650.jpg", price: 3800, stock: null, desc: "Yüksek performanslı oyun mouse'u.", specs: ["12000 DPI", "Kablosuz ve Kablolu", "RGB Aydınlatma"]}
+        ];
+        const monitors = [
+            {id: 61, name: "Acer Predator X45", brand: "Acer", img: "Acer Predator X45.jpg", price: 38000, stock: null, desc: "49 inç ultra geniş ekran ve 165Hz tazeleme hızı ile oyunlarda üstün performans.", specs: ["Ekran Boyutu: 49\"", "Çözünürlük: 5120x1440", "Tazeleme Hızı: 165Hz", "Panel Türü: VA", "Eğrilik: 1800R"]},
+            {id: 62, name: "ASUS ROG Swift OLED PG32UCDM", brand: "ASUS", img: "ASUS ROG Swift OLED PG32UCDM.jpg", price: 40000, stock: 2, desc: "32 inç 4K OLED ekran ve 240Hz tazeleme hızı ile mükemmel görüntü kalitesi.", specs: ["Ekran Boyutu: 32\"", "Çözünürlük: 3840x2160 (4K UHD)", "Tazeleme Hızı: 240Hz", "Panel Türü: OLED", "Renk Gamı: DCI-P3 %98"]},
+            {id: 63, name: "BenQ SW321C", brand: "BenQ", img: "BenQ SW321C.jpg", price: 35000, stock: null, desc: "32 inç 4K UHD ekran ve %99 Adobe RGB renk gamı ile profesyonel görüntü kalitesi.", specs: ["Ekran Boyutu: 32\"", "Çözünürlük: 3840x2160 (4K UHD)", "Renk Gamı: Adobe RGB %99", "Panel Türü: IPS", "HDR: Evet"]},
+            {id: 64, name: "Dell UltraSharp U3223QE", brand: "Dell", img: "Dell UltraSharp U3223QE.jpg", price: 32000, stock: 0, desc: "32 inç 4K UHD ekran ve %98 DCI-P3 renk gamı ile mükemmel görüntü kalitesi.", specs: ["Ekran Boyutu: 32\"", "Çözünürlük: 3840x2160 (4K UHD)", "Renk Gamı: DCI-P3 %98", "Panel Türü: IPS", "HDR: Evet"]},
+            {id: 65, name: "EIZO ColorEdge CG319X", brand: "EIZO", img: "EIZO ColorEdge CG319X.jpg", price: 39000, stock: null, desc: "31.1 inç 4K UHD ekran ve %99 Adobe RGB renk gamı ile profesyonel görüntü kalitesi.", specs: ["Ekran Boyutu: 31.1\"", "Çözünürlük: 4096x2160 (4K UHD)", "Renk Gamı: Adobe RGB %99", "Panel Türü: IPS", "HDR: Evet"]},
+            {id: 66, name: "HP Z27q G3", brand: "HP", img: "HP Z27q G3.jpg", price: 28000, stock: 3, desc: "27 inç 4K UHD ekran ve %98 DCI-P3 renk gamı ile mükemmel görüntü kalitesi.", specs: ["Ekran Boyutu: 27\"", "Çözünürlük: 3840x2160 (4K UHD)", "Renk Gamı: DCI-P3 %98", "Panel Türü: IPS", "HDR: Evet"]},
+            {id: 67, name: "Huawei Vision S24", brand: "Huawei", img: "Huawei Vision S24.jpg", price: 15000, stock: null, desc: "24 inç 2K QHD ekran ve 90Hz tazeleme hızı ile mükemmel görüntü kalitesi.", specs: ["Ekran Boyutu: 24\"", "Çözünürlük: 2560x1440 (2K QHD)", "Tazeleme Hızı: 90Hz", "Panel Türü: IPS", "Renk Gamı: sRGB %100"]},
+            {id: 68, name: "Lenovo Legion Y27h-30", brand: "Lenovo", img: "Lenovo Legion Y27h-30.jpg", price: 20000, stock: 2, desc: "27 inç QHD ekran ve 165Hz tazeleme hızı ile oyunlarda üstün performans.", specs: ["Ekran Boyutu: 27\"", "Çözünürlük: 2560x1440 (QHD)", "Tazeleme Hızı: 165Hz", "Panel Türü: IPS", "Renk Gamı: sRGB %99"]},
+            {id: 69, name: "LG 34GN850", brand: "LG", img: "LG 34GN850.jpg", price: 25000, stock: null, desc: "34 inç ultra geniş QHD ekran ve 144Hz tazeleme hızı ile oyunlarda üstün performans.", specs: ["Ekran Boyutu: 34\"", "Çözünürlük: 3440x1440 (UWQHD)", "Tazeleme Hızı: 144Hz", "Panel Türü: Nano IPS", "Eğrilik: 1900R"]},
+            {id: 70, name: "MSI MEG 342C QD-OLED", brand: "MSI", img: "MSI MEG 342C QD-OLED.jpg", price: 30000, stock: 0, desc: "34 inç ultra geniş QHD OLED ekran ve 175Hz tazeleme hızı ile oyunlarda üstün performans.", specs: ["Ekran Boyutu: 34\"", "Çözünürlük: 3440x1440 (UWQHD)", "Tazeleme Hızı: 175Hz", "Panel Türü: OLED", "Eğrilik: 1800R"]},
+            {id: 71, name: "Samsung Odyssey Neo G8", brand: "Samsung", img: "Samsung Odyssey Neo G8.jpg", price: 36000, stock: null, desc: "32 inç 4K UHD ekran ve 240Hz tazeleme hızı ile mükemmel görüntü kalitesi.", specs: ["Ekran Boyutu: 32\"", "Çözünürlük: 3840x2160 (4K UHD)", "Tazeleme Hızı: 240Hz", "Panel Türü: VA", "Eğrilik: 1000R"]},
+            {id: 72, name: "ViewSonic XG321UG", brand: "ViewSonic", img: "ViewSonic XG321UG.jpg", price: 22000, stock: 3, desc: "32 inç 4K UHD ekran ve 160Hz tazeleme hızı ile mükemmel görüntü kalitesi.", specs: ["Ekran Boyutu: 32\"", "Çözünürlük: 3840x2160 (4K UHD)", "Tazeleme Hızı: 160Hz", "Panel Türü: IPS", "Renk Gamı: DCI-P3 %90"]}
+        ];
+        const allProducts = [...laptops, ...systemUnits, ...keyboards, ...headphones, ...mice, ...monitors];
+        const campaignProducts = [
+            { ...laptops[2], oldPrice: 73000, price: 58400, indirim: 20 },
+            { ...laptops[4], oldPrice: 138000, price: 117300, indirim: 15 },
+            { ...laptops[9], oldPrice: 21000, price: 17850, indirim: 15 }
+        ];
+        const firsatProducts = [
+            { ...laptops[1], stock: 3 },
+            { ...laptops[7], stock: 0 },
+            { ...systemUnits[1], stock: 2 },
+            { ...systemUnits[4], stock: 0 },
+            { ...keyboards[3], stock: 0 },
+            { ...keyboards[5], stock: 1 },
+            { ...keyboards[9], stock: 0 },
+            { ...keyboards[11], stock: 3 },
+            { ...headphones[1], stock: 2 },
+            { ...headphones[6], stock: 0 },
+            { ...headphones[9], stock: 2 },
+            { ...mice[3], stock: 0 },
+            { ...mice[5], stock: 3 },
+            { ...monitors[3], stock: 0 },
+            { ...monitors[5], stock: 3 }
+        ];
+        let favorites = [];
+        let cart = [];
+        let currentUser = null;
+        function animateBtn(btn) {
+            btn.classList.add('animated');
+            setTimeout(() => btn.classList.remove('animated'), 200);
+        }
+        function openCartPage() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = '/Home/Sepet';
+        }
+        function closeCartModal() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+        function completeOrder() {
+            if (cart.length === 0) {
+                alert('Sepetiniz boş. Lütfen sepete ürün ekleyin.');
+                return;
+            }
+            const orderCompleteModal = document.getElementById('order-complete-modal');
+            const orderProductsList = document.getElementById('order-products-list');
+            orderProductsList.innerHTML = '';
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} (x${item.quantity})`;
+                orderProductsList.appendChild(li);
+            });
+            orderCompleteModal.style.display = 'flex';
+            cart = [];
+            updateCart();
+            updateCartCount();
+            closeCartModal();
+        }
+        function updateCartCount() {
+            const cartCountElement = document.getElementById('cart-count');
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCountElement.textContent = totalItems;
+        }
+        function showCategory(category, event) {
+            event.preventDefault();
+            const titleElement = document.getElementById('main-title');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            let productsToShow;
+            let currentTitle;
+            let markaFilterCategory;
+            if (category === 'laptop') {
+                productsToShow = laptops;
+                currentTitle = 'Laptop Modelleri';
+                markaFilterCategory = 'laptop';
+            } else if (category === 'sistem-birimleri') {
+                productsToShow = systemUnits;
+                currentTitle = 'Sistem Birimleri';
+                markaFilterCategory = 'systemUnits';
+            } else if (category === 'klavyeler') {
+                productsToShow = keyboards;
+                currentTitle = 'Klavyeler';
+                markaFilterCategory = 'keyboards';
+            } else if (category === 'kulakliklar') {
+                productsToShow = headphones;
+                currentTitle = 'Kulaklık Modelleri';
+                markaFilterCategory = 'headphones';
+            } else if (category === 'mouse') {
+                productsToShow = mice;
+                currentTitle = 'Mouse Modelleri';
+                markaFilterCategory = 'mice';
+            } else if (category === 'monitors') {
+                productsToShow = monitors;
+                currentTitle = 'Monitör Modelleri';
+                markaFilterCategory = 'monitors';
+            } else {
+                productsToShow = allProducts;
+                currentTitle = 'Tüm Ürünler';
+                markaFilterCategory = 'all';
+            }
+            titleElement.textContent = currentTitle;
+            renderProducts(productsToShow);
+            renderMarkaButtons(markaFilterCategory);
+            document.getElementById('nav-kategori').classList.add('active');
+        }
+        function renderMarkaButtons(category) {
+            const markaContainer = document.getElementById('marka-container');
+            markaContainer.innerHTML = '';
+            let brands = [];
+            let productsToFilter;
+            if (category === 'laptop') {
+                productsToFilter = laptops;
+            } else if (category === 'sistemUnits') {
+                productsToFilter = systemUnits;
+            } else if (category === 'keyboards') {
+                productsToFilter = keyboards;
+            } else if (category === 'headphones') {
+                productsToFilter = headphones;
+            } else if (category === 'mice') {
+                productsToFilter = mice;
+            } else if (category === 'monitors') {
+                productsToFilter = monitors;
+            } else {
+                productsToFilter = allProducts;
+            }
+            productsToFilter.forEach(p => {
+                if (!brands.includes(p.brand)) {
+                    brands.push(p.brand);
+                }
+            });
+            if (brands.length > 0) {
+                const markaListDiv = document.createElement('div');
+                markaListDiv.classList.add('marka-list');
+                brands.forEach(brand => {
+                    const button = document.createElement('button');
+                    button.classList.add('marka-btn');
+                    button.textContent = brand;
+                    button.onclick = () => filterProductsByBrand(brand, category);
+                    markaListDiv.appendChild(button);
+                });
+                markaContainer.appendChild(markaListDiv);
+            }
+        }
+        function filterProductsByBrand(brand, category) {
+            let productsToFilter;
+            if (category === 'laptop') {
+                productsToFilter = laptops;
+            } else if (category === 'sistemUnits') {
+                productsToFilter = systemUnits;
+            } else if (category === 'keyboards') {
+                productsToFilter = keyboards;
+            } else if (category === 'headphones') {
+                productsToFilter = headphones;
+            } else if (category === 'mice') {
+                productsToFilter = mice;
+            } else if (category === 'monitors') {
+                productsToFilter = monitors;
+            } else {
+                productsToFilter = allProducts;
+            }
+            const filtered = productsToFilter.filter(p => p.brand === brand);
+            renderProducts(filtered);
+            const markaButtons = document.querySelectorAll('.marka-btn');
+            markaButtons.forEach(btn => {
+                if (btn.textContent === brand) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+        }
+        function showMain() {
+            document.getElementById('main-title').textContent = 'Laptop Modelleri';
+            renderProducts(laptops);
+            renderMarkaButtons('laptop');
+            document.querySelectorAll('.nav-menu a').forEach(link => link.classList.remove('active'));
+        }
+        function showSection(section, event) {
+            if (event) event.preventDefault();
+            const titleElement = document.getElementById('main-title');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            document.getElementById('marka-container').innerHTML = '';
+            if (section === 'kampanya') {
+                titleElement.textContent = 'Kampanyalı Ürünler';
+                renderProducts(campaignProducts, true);
+                document.getElementById('nav-kampanya').classList.add('active');
+            } else if (section === 'firsat') {
+                titleElement.textContent = 'Fırsat Köşesi';
+                renderProducts(firsatProducts);
+                document.getElementById('nav-firsat').classList.add('active');
+            } else if (section === 'marka') {
+                titleElement.textContent = 'Markalarımız';
+                renderMarkaButtons('all');
+                renderProducts(allProducts);
+                document.getElementById('nav-marka').classList.add('active');
+            }
+        }
+        function addToCart(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (product && (product.stock === null || product.stock > 0)) {
+                const existingItem = cart.find(item => item.id === productId);
+                if (existingItem) {
+                    existingItem.quantity++;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
+                if (typeof product.stock === "number" && product.stock > 0) {
+                    product.stock--;
+                    const currentCategory = document.getElementById('main-title').textContent;
+                    if (currentCategory === 'Laptop Modelleri') {
+                        renderProducts(laptops);
+                    } else if (currentCategory === 'Sistem Birimleri') {
+                        renderProducts(systemUnits);
+                    } else if (currentCategory === 'Klavyeler') {
+                        renderProducts(keyboards);
+                    } else if (currentCategory === 'Kulaklık Modelleri') {
+                        renderProducts(headphones);
+                    } else if (currentCategory === 'Mouse Modelleri') {
+                        renderProducts(mice);
+                    } else if (currentCategory === 'Monitör Modelleri') {
+                        renderProducts(monitors);
+                    } else if (currentCategory === 'Kampanyalı Ürünler') {
+                        renderProducts(campaignProducts, true);
+                    } else if (currentCategory === 'Fırsat Köşesi') {
+                        renderProducts(firsatProducts);
+                    } else {
+                        renderProducts(allProducts);
+                    }
+                }
+            } else if (product.stock === 0) {
+                alert('Ürün stokta bulunmamaktadır.');
+            }
+        }
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-modal-items');
+            const cartTotalContainer = document.getElementById('cart-modal-total');
+            const completeOrderBtn = document.getElementById('complete-order-modal');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<li>Sepetiniz boş.</li>';
+                cartTotalContainer.innerHTML = '';
+                completeOrderBtn.style.display = 'none';
+                return;
+            }
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} (x${item.quantity}) <span class="cart-price">${(item.price * item.quantity).toLocaleString('tr-TR')} TL</span>`;
+                cartItemsContainer.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            cartTotalContainer.innerHTML = `Toplam: <span class="cart-total-price">${total.toLocaleString('tr-TR')} TL</span>`;
+            completeOrderBtn.style.display = 'block';
+        }
+        function toggleFavorite(productId) {
+            const index = favorites.indexOf(productId);
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(productId);
+            }
+            const currentCategory = document.getElementById('main-title').textContent;
+            if (currentCategory === 'Laptop Modelleri') {
+                renderProducts(laptops);
+            } else if (currentCategory === 'Sistem Birimleri') {
+                renderProducts(systemUnits);
+            } else if (currentCategory === 'Klavyeler') {
+                renderProducts(keyboards);
+            } else if (currentCategory === 'Kulaklık Modelleri') {
+                renderProducts(headphones);
+            } else if (currentCategory === 'Mouse Modelleri') {
+                renderProducts(mice);
+            } else if (currentCategory === 'Monitör Modelleri') {
+                renderProducts(monitors);
+            } else if (currentCategory === 'Kampanyalı Ürünler') {
+                renderProducts(campaignProducts, true);
+            } else if (currentCategory === 'Fırsat Köşesi') {
+                renderProducts(firsatProducts);
+            } else {
+                renderProducts(allProducts);
+            }
+        }
+        function closeOrdersModal() {
+            document.getElementById('orders-modal').style.display = 'none';
+        }
+        function searchProducts() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const filteredProducts = allProducts.filter(product =>
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.brand.toLowerCase().includes(searchTerm) ||
+                (product.desc && product.desc.toLowerCase().includes(searchTerm)) ||
+                product.specs.some(spec => spec.toLowerCase().includes(searchTerm))
+            );
+            document.getElementById('main-title').textContent = 'Arama Sonuçları';
+            document.getElementById('marka-container').innerHTML = '';
+            renderProducts(filteredProducts);
+            document.querySelectorAll('.nav-menu a').forEach(link => link.classList.remove('active'));
+        }
+        function renderProducts(list = laptops, isCampaign = false) {
+            const productsSection = document.getElementById('products');
+            productsSection.innerHTML = '';
+            list.forEach((product, idx) => {
+                const isFav = favorites.includes(product.id);
+                let stokYok = product.stock === 0;
+                let stokVar = typeof product.stock === "number" && product.stock > 0 && product.stock <= 3;
+                let fiyatHtml = isCampaign
+                    ? `<span class="old-price">${product.oldPrice.toLocaleString('tr-TR')} TL</span>
+                       <span class="price">${product.price.toLocaleString('tr-TR')} TL</span>
+                       <span class="indirim-box">%${product.indirim} İndirim</span>`
+                    : `<span class="price">${product.price.toLocaleString('tr-TR')} TL</span>`;
+                productsSection.innerHTML += `
+                <div class="product-card">
+                            <button class="fav-btn${isFav ? ' fav' : ''}"
+                data-id="${product.id}"
+                onclick="animateBtn(this); toggleFavoriteAjax(this)"
+                title="Favoriye Ekle/Çıkar">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </button>
+                    <div class="product-imgbox">
+                        <img src="/images/${product.img}" alt="${product.name}" class="product-img"
+                            onerror="this.src='https://dummyimage.com/140x90/333/fff&text=Görsel+Yok';" />
+                    </div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <div class="brand-name">${product.brand}</div>
+                        <div style="color:#333;font-size:0.97em;margin:3px 0 8px 0;text-align:center;">${product.desc || ""}</div>
+                        <ul class="spec-list">
+                            ${product.specs.map(s=>`<li>${s}</li>`).join('')}
+                        </ul>
+                        ${fiyatHtml}
+                        ${stokYok ? '<div class="stok-yok">Stokta Yok!</div>' : (stokVar ? `<div class="stok-var">${product.stock} Adet Kaldı</div>` : "")}
+                        <button class="buy-btn" onclick="animateBtn(this);addToCart(${product.id})" ${stokYok ? 'disabled' : ''}>Sepete Ekle</button>
+                    </div>
+                </div>
+                `;
+            });
+        }
+        function showLoginForm() {
+            window.location.href = '/Account/Login';
+        }
+        function showRegisterForm() {
+            window.location.href = '/Account/Register';
+        }
+        function showUserInfo() {
+            window.location.href = '/Account/Profile';
+        }
+        function login() {
+            window.location.href = '/Account/Login';
+        }
+        function register() {
+            window.location.href = '/Account/Register';
+        }
+        function logout() {
+            window.location.href = '/Account/Logout';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedCart = localStorage.getItem('cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+            showMain();
+            updateCart();
+            updateCartCount();
+        });
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        function showOrdersModal() {
+            $.ajax({
+                url: '/Order/AllOrders',
+                method: 'GET',
+                success: function(res) {
+                    const ordersList = document.getElementById('orders-list');
+                    ordersList.innerHTML = '';
+                    if (res.orders && res.orders.length > 0) {
+                        res.orders.forEach(function(order) {
+                            ordersList.innerHTML += `<li>${order.UrunAdi} <span style="color:#aaa;">x${order.Adet}</span></li>`;
+                        });
+                    } else {
+                        ordersList.innerHTML = '<li>Henüz siparişiniz yok.</li>';
+                    }
+                    document.getElementById('orders-modal').style.display = 'flex';
+                },
+                error: function() {
+                    alert("Siparişler alınırken hata oluştu.");
+                }
+            });
+        }
+                  function toggleFavoriteAjax(btn) {
+            btn.classList.toggle('fav');
+            var productId = btn.getAttribute('data-id');
+            console.log("Favoriye eklenen ürün id:", productId);
+            var isAdding = btn.classList.contains('fav');
+            var url = isAdding ? '/Favorites/Add' : '/Favorites/Remove';
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: productId })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Sunucu hatası');
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) {
+                    alert(data.message || 'Favori işlemi başarısız!');
+                    btn.classList.toggle('fav'); // geri al!
+                }
+            })
+            .catch(err => {
+                btn.classList.toggle('fav');
+                alert('Favori işlemi başarısız oldu!');
+            });
+        }
+        window.userLogin = function() { window.location.href = '/Account/Login'; }
+        window.userRegister = function() { window.location.href = '/Account/Register'; }
+        window.userOrders = function() { showOrdersModal(); }
+        window.userInfo = function() { window.location.href = '/Account/Profile'; }
+        window.userLogout = function() { window.location.href = '/Account/Logout'; }
+        document.addEventListener('DOMContentLoaded', function () {
+            var profileBtn = document.getElementById('profile-btn');
+            var profileMenu = document.getElementById('profile-menu');
+            if (profileBtn && profileMenu) {
+                profileBtn.addEventListener('mouseover', function () {
+                    profileMenu.style.display = "block";
+                });
+                profileMenu.addEventListener('mouseleave', function () {
+                    profileMenu.style.display = "none";
+                });
+            }
+        });
+    </script>
+</body>
+</html>
