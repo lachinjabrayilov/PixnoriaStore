@@ -18,57 +18,73 @@ PixnoriaStore, modern ve kullanıcı dostu arayüze sahip bir e-ticaret platform
 
 ## Ekran Görüntüleri
 
-### Veritabanı Yapısı
-
-![Veritabanı Tablo Yapısı](image2)
-
-PixnoriaStore veritabanında ürünler, siparişler, kullanıcılar ve favoriler gibi ana tablolar yer almaktadır. Bu yapı, uygulamanın veri ilişkilerini ve temel işleyişini tanımlar.
-
----
-
 ### Ana Sayfa & Kategori Filtreleme
 
-![Ana Sayfa ve Kategoriler](image3)
+![Ana Sayfa ve Kategoriler](assets/images/ana-sayfa-ve-kategori-filtreleme.png)
 
-Farklı marka ve kategorilere göre ürünleri filtreleyebileceğiniz modern ana sayfa. Sistem birimleri ve diğer kategorilerdeki ürünler detaylı şekilde listelenir.
+Kullanıcılar ana sayfada kategorilere ve markalara göre ürünleri filtreleyebilir, arama kutusu üzerinden istedikleri ürünü hızlıca bulabilirler.
 
 ---
 
-### Kampanyalı Ürünler
+### Arama Sonuçları
 
-![Kampanyalı Ürünler](image4)
+![Arama Sonuçları](assets/images/arama-sonuclari.png)
 
-İndirimde olan ürünler, teknik özellikleri, indirim oranı ve kalan stok miktarı ile birlikte sıralanıyor. Kullanıcılar kampanyalı ürünleri kolayca sepete ekleyebilir.
+Arama kutusuna ürün adı, model veya marka girildiğinde ilgili sonuçlar kartlar halinde listelenir.
+
+---
+
+### Favori Ürünlerim
+
+![Favori Ürünlerim](assets/images/favori-urunlerim.png)
+
+Kullanıcıların favoriye eklediği ürünler; görsel, fiyat ve stok bilgisi ile kutucuklar halinde listelenir. Favoriden çıkarma işlemi yapılabilir.
 
 ---
 
 ### Fırsat Köşesi
 
-![Fırsat Köşesi](image5)
+![Fırsat Köşesi](assets/images/firsat-kosesi.png)
 
-Stokta kalan son ürünler, uygun fiyatlarla ve teknik detaylarıyla birlikte listeleniyor. Her ürünün kalan adedi, sepete ekleme butonu ve stok durumu gösterilmektedir.
+Stokta kalan son ürünler ve fırsat ürünleri, uygun fiyatlarla ve teknik detaylarıyla birlikte listelenir. Her ürünün kalan adedi ve sepete ekleme butonu gösterilmektedir.
 
 ---
 
-### Proje Dosya Yapısı
+### Giriş Ekranı
 
-![Proje Dosya Yapısı](image6)
+![Giriş Ekranı](assets/images/giris-ekrani.png)
 
-Visual Studio'da PixnoriaStore projesinin klasör/dosya organizasyonu. wwwroot altında css, images ve js klasörleri; Properties ve diğer temel klasörler yer almaktadır.
+Kullanıcılar e-posta ve şifre ile sisteme giriş yapabilir.
+
+---
+
+### Kampanyalı Ürünler
+
+![Kampanyalı Ürünler](assets/images/kampanyali-urunler.png)
+
+İndirimde olan ürünler, teknik özellikleri, indirim oranı ve kalan stok miktarı ile birlikte sıralanıyor.
 
 ---
 
 ### Kullanıcılar Tablosu
 
-![Kullanıcılar Tablosu](image7)
+![Kullanıcılar Tablosu](assets/images/kullanicilar-tablosu.png)
 
 Uygulamanın kullanıcılar tablosu (Users): Id, Ad, Soyad, Email, Şifre, KayıtTarihi, SonGirisTarihi gibi alanlar ile kullanıcı yönetimi sağlanmaktadır.
 
 ---
 
+### Laptop Modelleri Listesi
+
+![Laptop Modelleri Listesi](assets/images/laptop-modelleri-listesi.png)
+
+Laptop modelleri kategorisindeki ürünler, teknik özellikleri ve stok durumu ile birlikte kutucuklar halinde gösterilmektedir.
+
+---
+
 ### Marka Filtreleme Arayüzü
 
-![Marka Filtreleme](image8)
+![Marka Filtreleme Arayüzü](assets/images/marka-filtreleme-arayuzu.png)
 
 Kullanıcılar, ürünleri markalarına göre filtreleyebilir ve istedikleri ürünleri hızlı şekilde bulabilirler.
 
@@ -76,129 +92,65 @@ Kullanıcılar, ürünleri markalarına göre filtreleyebilir ve istedikleri ür
 
 ### Model Dosyaları
 
-![Model Dosyaları](image9)
+![Model Dosyaları](assets/images/model-dosyalari.png)
 
 Favori, Sipariş, Sipariş Detay, Ürün ve Kullanıcı gibi ana veri modellerinin C# dosyaları projede organize edilmiştir.
 
 ---
 
-### Giriş Ekranı
+### Proje Dosya Yapısı
 
-![Giriş Ekranı](image10)
+![Proje Dosya Yapısı](assets/images/proje-dosya-yapisi.png)
 
-Kullanıcılar e-posta ve şifre ile sisteme giriş yapabilir.
-
----
-
-### Sepetim Ekranı
-
-![Sepetim](image11)
-
-Sepetteki ürünler, miktar ve fiyat bilgisiyle birlikte listelenir. Kullanıcılar toplam tutarı görebilir ve siparişi tamamlayabilir.
-
----
-
-### Sipariş Detay Tablosu
-
-![Sipariş Detay Tablosu](image12)
-
-Sipariş Detay tablosunda Id, SiparisId, UrunId, Adet ve Fiyat alanları bulunur.
-
----
-
-### Üye Ol Ekranı
-
-![Üye Ol Ekranı](image13)
-
-Kullanıcılar ad, soyad, e-posta ve şifre girerek sisteme kolayca üye olabilirler.
-
----
-
-### Arama Sonuçları
-
-![Arama Sonuçları](image14)
-
-Kullanıcılar arama kutusuna ürün adını yazıp ilgili sonuçlara hızlıca ulaşabilirler.
-
----
-
-### Hatalı Giriş Ekranı
-
-![Hatalı Giriş Ekranı](image15)
-
-Giriş sırasında yanlış e-posta veya şifre girilirse kullanıcıya uyarı mesajı gösterilir.
-
----
-
-### Görsel Kaynak Klasörü
-
-![Görsel Kaynak Klasörü](image16)
-
-Proje içinde kullanılan ürün görselleri wwwroot/images klasöründe tutulmaktadır.
-
----
-
-### Ürünler Tablosu
-
-![Ürünler Tablosu](image17)
-
-Veritabanında ürünlerin id, ad, adet, fiyat, resim url, marka, açıklama, kategori gibi alanları detaylı şekilde tutulur.
-
----
-
-### Tablolar ve Alanlar
-
-![Tablo ve Alanlar](image18)
-
-Sipariş, Sipariş Detay ve Ürünler tablolarındaki tüm alanların veri tipi, boyut ve null izni özetlenmiştir.
-
----
-
-### Ürün Kolonları
-
-![Ürün Kolonları](image19)
-
-Urunler tablosunun kolonları ve veri tipleri; ürünün teknik bilgileri, görseli, fiyatı, açıklaması ve stok durumu ile birlikte listelenir.
-
----
-
-### Siparişlerim Ekranı
-
-![Siparişlerim](image20)
-
-Kullanıcıya ait geçmiş siparişler; sipariş no, tarih, alıcı, ürünler, adet ve toplam fiyat ile birlikte listelenir.
-
----
-
-### Laptop Modelleri Listesi
-
-![Laptop Modelleri](image21)
-
-Laptop modelleri kategorisindeki ürünler, teknik özellikleri ve stok durumu ile birlikte kutucuklar halinde gösterilmekte.
-
----
-
-### Favori Ürünlerim
-
-![Favori Ürünlerim](image22)
-
-Kullanıcıya ait favoriye eklenmiş ürünler, görsel, fiyat ve stok bilgisi ile birlikte listelenir. Favoriden çıkarma işlemi yapılabilir.
-
----
-
-### Geliştirme ve Test Süreci
-
-![Geliştirme ve Test](image23)
-
-Projenin geliştirme aşamasında kod editörü ve tarayıcıda canlı görüntü.
+Visual Studio'da PixnoriaStore projesinin klasör/dosya organizasyonu. wwwroot altında css, images ve js klasörleri; Properties ve diğer temel klasörler yer almaktadır.
 
 ---
 
 ### Proje Yapısı & Kod Editörü
 
-![Proje Yapısı](image24)
+![Proje Yapısı & Kod Editörü](assets/images/proje-yapisi-kod-editoru.png)
 
 Proje dosya ve klasör organizasyonu; kod editörü ve çözüm gezgini görünümü.
+
+---
+
+### Sepetim Ekranı
+
+![Sepetim Ekranı](assets/images/sepetim-ekrani.png)
+
+Sepetteki ürünler, miktar ve fiyat bilgisiyle birlikte listelenir. Kullanıcılar toplam tutarı görebilir ve siparişi tamamlayabilir.
+
+---
+
+### Siparişlerim Ekranı
+
+![Siparişlerim Ekranı](assets/images/siparislerim-ekrani.png)
+
+Kullanıcıya ait geçmiş siparişler; sipariş no, tarih, alıcı, ürünler, adet ve toplam fiyat ile birlikte listelenir.
+
+---
+
+### Tablolar ve Alanlar
+
+![Tablolar ve Alanlar](assets/images/tablolar-ve-alanlar.png)
+
+Sipariş, Sipariş Detay ve Ürünler tablolarındaki tüm alanların veri tipi, boyut ve null izni özetlenmiştir.
+
+---
+
+### Ürünler Tablosu
+
+![Ürünler Tablosu](assets/images/urunler-tablosu.png)
+
+Veritabanında ürünlerin id, ad, adet, fiyat, resim url, marka, açıklama, kategori gibi alanları detaylı şekilde tutulur.
+
+---
+
+### Üye Ol Ekranı
+
+![Üye Ol Ekranı](assets/images/uye-ol-ekrani.png)
+
+Kullanıcılar ad, soyad, e-posta ve şifre girerek sisteme kolayca üye olabilirler.
 
 ---
 
@@ -206,7 +158,7 @@ Proje dosya ve klasör organizasyonu; kod editörü ve çözüm gezgini görün�
 
 1. Projeyi kopyalayın ve Visual Studio’da açın.
 2. SQL Server’da PixnoriaStoreDB veritabanını oluşturun ve tabloları import edin.
-3. wwwroot/images klasörüne ürün görsellerinizi ekleyin.
+3. wwwroot/assets/images klasörüne ürün görsellerinizi ekleyin.
 4. Gerekli NuGet paketlerini yükleyin.
 5. Uygulamayı çalıştırarak web arayüzüne erişin.
 
@@ -214,4 +166,10 @@ Proje dosya ve klasör organizasyonu; kod editörü ve çözüm gezgini görün�
 
 ## Lisans
 
-Bu proje MIT lisansı
+Bu proje MIT lisansı ile lisanslanmıştır.
+
+---
+
+## İletişim
+
+Herhangi bir soru veya katkı için lütfen iletişime geçin!
